@@ -21,7 +21,7 @@ return [
 ];
 ```
 
-###Usage
+### Usage
 
 Data-tables can be used to create listings loaded by AJAX request. Additionally rows can be filtered, 
 sorted and paginated. 
@@ -30,7 +30,7 @@ Script will send POST request to package controller which will return JSON repon
 igornast_datatables_get_data POST  /igornast-data-tables/get-data
 ```
 
-###Scripts
+### Scripts
 
 Add and install assets (js, css) into your base twig template, use twig extension to render listing.
 ```twig
@@ -43,7 +43,7 @@ Add and install assets (js, css) into your base twig template, use twig extensio
 {% endblock %}
 ```
 
-###Build Listing
+### Build Listing
 
 Extend Controller class with AbstractDataTablesController or create new instance for personal use.
 ```php
@@ -79,7 +79,7 @@ Component currently support only scalar values;
 $listing->addColumn('entityProperty', 'Column Label');
 ```
 
-###Annotation
+### Annotation
 
 Use data-tables component annotations to configure entity and search field for listing.
 
