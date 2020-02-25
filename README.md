@@ -81,18 +81,20 @@ $listing->addColumn('entityProperty', 'Column Label');
 
 ### Annotation
 
-Use data-tables component annotations to configure entity and search field for listing.
+Use data-tables component annotation to configure source entity and search field for listing.
 
 ```php
-    /**
-     * @DataTables(entity="App\Entity\SampleItem", searchField="name")
-     */
-    public function index()
-    {
-        //listing builder code
+use Igornast\DataTables\Annotation\DataTables;
 
-        return $this->render('index.html.twig', ['listing' => $listing]);
-    }
+/**
+ * @DataTables(entity="App\Entity\SampleItem", searchField="name")
+ */
+public function index()
+{
+    //listing builder code
+
+    return $this->render('index.html.twig', ['listing' => $listing]);
+}
 ```
 
 ## License
