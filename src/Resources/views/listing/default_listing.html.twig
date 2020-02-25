@@ -1,0 +1,31 @@
+<table id="{{ listing.name }}" class="display" style="width:100%">
+    <thead>
+    <tr>
+        {% for column in listing.columns %}
+            <th>{{ column.label|trans }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function() {
+        $('#{{ listing.name }}').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "paging": true,
+            "ajax": {
+                "url": "{{ path('igornast_datatables_get_data') }}",
+                "type": "POST",
+                "data": {"path_name": "{{ listing.pathName }}" },
+            },
+            "columns": [
+                {% for key, col in listing.columns %}
+                    { "data": "{{ key }}" },
+                {% endfor %}
+            ]
+        });
+    } );
+</script>

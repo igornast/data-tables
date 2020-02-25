@@ -1,0 +1,4 @@
+igornast_datatables_get_data:
+    path:   /get-data
+    methods: POST
+    controller: Igornast\DataTables\Controller\DataTablesController

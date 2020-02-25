@@ -1,0 +1,22 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Igornast\DataTables\Twig\Extension\ListingExtension:
+        class: Igornast\DataTables\Twig\Extension\ListingExtension
+        tags: ['twig.extension']
+
+    Igornast\DataTables\Twig\Renderer\ListingRenderer:
+        class: Igornast\DataTables\Twig\Renderer\ListingRenderer
+
+    Igornast\DataTables\Fetcher\DataTablesItemsFetcher:
+        class: Igornast\DataTables\Fetcher\DataTablesItemsFetcher
+
+    Igornast\DataTables\Model\Context\DataTablesContext:
+        class: Igornast\DataTables\Model\Context\DataTablesContext
+
+    Igornast\DataTables\Controller\DataTablesController:
+        class: Igornast\DataTables\Controller\DataTablesController
+        tags: ['controller.service_arguments']

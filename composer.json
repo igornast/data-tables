@@ -1,0 +1,24 @@
+{
+    "name": "igornast/data-tables",
+    "description": "DataTables Symfony component.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Igor",
+            "email": "nastarowicz@hotmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "ext-pdo": "*",
+        "doctrine/annotations": "^1.8",
+        "symfony/framework-bundle": "^5.0"
+    },
+    "autoload": {
+        "psr-4": { "Igornast\\DataTables\\": "src/" },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
+    }
+}
