@@ -7,6 +7,12 @@ and suggestions about development and features implementation.
 Primary goal is to improve rendering twig views with listings, 
 to make them more friendly to users and Symfony developers.
 
+### Example
+
+<p align="center">
+  <img width="480" height="auto" src="https://media.giphy.com/media/LnVtbUzSP1syuLZAFA/giphy.gif">
+</p>
+
 ### Installation
 
 Install component with Composer.
