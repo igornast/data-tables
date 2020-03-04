@@ -4,7 +4,7 @@
 namespace Igornast\DataTables\Listing;
 
 
-class Listing
+class Listing implements ListingInterface
 {
     const DEFAULT_TEMPLATE = '@IgornastDataTables/listing/default_listing.html.twig';
     /**

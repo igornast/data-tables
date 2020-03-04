@@ -44,8 +44,8 @@ class DataTablesItemsFetcher
             ->setMaxResults($context->getLimit())
             ->setFirstResult($context->getOffset());
 
-        foreach ($context->getSortArray() as $field => $order) {
-            $qb->addOrderBy(sprintf('i.%s', $field), $order);
+        foreach ($context->getSortArray() as $columnSort) {
+            $qb->addOrderBy(sprintf('i.%s', $columnSort->getField()), $columnSort->getOrder());
         }
 
         $this->addLike($qb, $context, $mainSearchField);
@@ -91,11 +91,11 @@ class DataTablesItemsFetcher
 
         foreach ($context->getColumns() as $idx => $column) {
             if ($idx === 0) {
-                $select = sprintf('%s.%s', $alias, $column->getField());
+                $select = sprintf('%s.%s', $alias, $column->getPropertyName());
                 continue;
             }
 
-            $select = sprintf('%s, %s.%s', $select, $alias, $column->getField());
+            $select = sprintf('%s, %s.%s', $select, $alias, $column->getPropertyName());
         }
 
         return $select;
@@ -108,7 +108,7 @@ class DataTablesItemsFetcher
      */
     private function addLike(QueryBuilder $qb, DataTablesContext $context, ?string $mainSearchField): void
     {
-        if (!empty($context->getSearch()) && $mainSearchField !== null) {
+        if ($context->getSearch() !== null && $mainSearchField !== null) {
             $qb->where(sprintf('i.%s LIKE :txt', $mainSearchField))
                 ->setParameter('txt', sprintf('%%%s%%', $context->getSearch()), PDO::PARAM_STR);
         }
