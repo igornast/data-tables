@@ -13,7 +13,7 @@ class DataTablesColumn
     /**
      * @var string
      */
-    private $field;
+    private $propertyName;
     /**
      * @var string
      */
@@ -25,16 +25,16 @@ class DataTablesColumn
     /**
      * @var null|string
      */
-    private $sort;
+    private $order;
 
-    public static function create(int $id, string $field, string $name, string $search, ?string $sort): self
+    public static function create(int $id, string $field, string $name, string $search, ?string $order): self
     {
         $obj = new self();
         $obj->id = $id;
-        $obj->field = $field;
+        $obj->propertyName = $field;
         $obj->name = $name;
         $obj->search = $search;
-        $obj->sort = $sort;
+        $obj->order = $order;
 
         return $obj;
     }
@@ -50,9 +50,9 @@ class DataTablesColumn
     /**
      * @return string
      */
-    public function getField(): string
+    public function getPropertyName(): string
     {
-        return $this->field;
+        return $this->propertyName;
     }
 
     /**
@@ -74,8 +74,8 @@ class DataTablesColumn
     /**
      * @return null|string
      */
-    public function getSort(): ?string
+    public function getOrder(): ?string
     {
-        return $this->sort;
+        return $this->order;
     }
 }

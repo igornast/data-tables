@@ -5,6 +5,7 @@ namespace Igornast\DataTables\ListingBuilder;
 
 
 use Igornast\DataTables\Listing\Listing;
+use Igornast\DataTables\Listing\ListingInterface;
 
 class ListingBuilder implements ListingBuilderInterface
 {
@@ -18,8 +19,15 @@ class ListingBuilder implements ListingBuilderInterface
         $this->listing = Listing::create($name, $pathName, []);
     }
 
-    public function addColumn(string $field, string $label): Listing
+    public function addColumn(string $field, string $label): ListingBuilderInterface
     {
-        return $this->listing->addColumn($field, $label);
+        $this->listing->addColumn($field, $label);
+
+        return $this;
+    }
+
+    public function getListing(): ListingInterface
+    {
+        return $this->listing;
     }
 }

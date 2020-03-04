@@ -5,6 +5,7 @@ namespace Igornast\DataTables\Model\Context;
 
 
 use Igornast\DataTables\Model\DataTablesColumn;
+use Igornast\DataTables\Model\DataTablesColumnSort;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -31,12 +32,12 @@ final class DataTablesContext implements DataTablesContextInterface
      */
     private $columnsSortOrder;
     /**
-     * @var string
+     * @var null|string
      */
     private $search;
 
     /**
-     * @var string
+     * @var null|string
      */
     private $pathName;
 
@@ -48,6 +49,8 @@ final class DataTablesContext implements DataTablesContextInterface
     private function initialize(Request $request): void
     {
         $this->columns = [];
+        $this->columnsSortOrder = [];
+
         $this->draw = $request->request->getInt('draw', 0);
         $this->offset = $request->request->getInt('start', 0);
         $this->limit = $request->request->getInt('length', 0);
@@ -56,39 +59,37 @@ final class DataTablesContext implements DataTablesContextInterface
         $columns = $request->request->get('columns', []);
         $order = $request->request->get('order', []);
 
-        if (is_array($columns)) {
-            $this->columns = $this->handleColumns($columns, $order);
+        if (sizeof($columns) > 0) {
+            $this->handleSortOrder($order);
+            $this->handleColumns($columns);
         }
 
         $search = $request->request->get('search', []);
-        $this->search = $search['value'] ?? '';
+        $this->search = $search['value'] ?? null;
     }
 
-    private function handleColumns(array $columns, array $order): array
+    private function handleSortOrder(array $order): void
     {
-        $result = [];
-        $sort = [];
         foreach ($order as $item) {
-            $this->columnsSortOrder[] = (int)$item['column'];
-            $sort[(int)$item['column']] = $item['dir'];
+            $this->columnsSortOrder[(int)$item['column']] = $item['dir'];
         }
+    }
 
-
+    private function handleColumns(array $columns): void
+    {
         foreach ($columns as $idx => $column) {
-            $data = $column['data'] ?? null;
+            $propertyName = $column['data'] ?? null;
 
-            if (!is_string($data)) {
+            if (!is_string($propertyName)) {
                 continue;
             }
 
             $name = $column['name'] ?? '';
             $search = $column['search']['value'] ?? '';
-            $columnSort = $sort[$idx] ?? null;
+            $columnOrder = $this->columnsSortOrder[$idx] ?? null;
 
-            $result[] = DataTablesColumn::create($idx, $data, $name, $search, $columnSort);
+            $this->columns[$idx] = DataTablesColumn::create($idx, $propertyName, $name, $search, $columnOrder);
         }
-
-        return $result;
     }
 
     /**
@@ -116,17 +117,17 @@ final class DataTablesContext implements DataTablesContextInterface
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getSearch(): string
+    public function getSearch(): ?string
     {
         return $this->search;
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getPathName(): string
+    public function getPathName(): ?string
     {
         return $this->pathName;
     }
@@ -139,21 +140,21 @@ final class DataTablesContext implements DataTablesContextInterface
         return $this->columns;
     }
 
+    /**
+     * @return DataTablesColumnSort[]
+     */
     public function getSortArray(): array
     {
-        $columnsSort = [];
         $items = [];
 
-        foreach ($this->columns as $column) {
-            if ($column->getSort() === null) {
+        foreach ($this->columnsSortOrder as $pos => $columnIdx) {
+            $columnDef = $this->columns[$pos] ?? null;
+
+            if($columnDef === null) {
                 continue;
             }
 
-            $columnsSort[$column->getId()] = [$column->getField() => $column->getSort()];
-        }
-
-        foreach ($this->columnsSortOrder as $pos => $columnIdx) {
-            $items = array_merge($items, $columnsSort[$columnIdx]);
+            $items[] = DataTablesColumnSort::create($columnDef->getPropertyName(), $columnDef->getOrder());
         }
 
         return $items;
