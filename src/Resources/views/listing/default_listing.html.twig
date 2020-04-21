@@ -11,21 +11,28 @@
 </table>
 
 <script>
-    $(document).ready(function() {
-        $('#{{ listing.name }}').DataTable( {
-            "processing": true,
-            "serverSide": true,
-            "paging": true,
-            "ajax": {
-                "url": "{{ path('igornast_datatables_get_data') }}",
-                "type": "POST",
-                "data": {"path_name": "{{ listing.pathName }}" },
-            },
-            "columns": [
-                {% for key, col in listing.columns %}
-                    { "data": "{{ key }}" },
-                {% endfor %}
-            ]
-        });
-    } );
+    {% if listing.columns is not empty %}
+        $(document).ready(function() {
+            $('#{{ listing.name }}').DataTable( {
+                "processing": true,
+                "serverSide": true,
+                "paging": true,
+                {% if listing.mainSearchField is null and listing.pathName is null %}"searching": false,{% endif %}
+                "ajax": {
+                    "url": "{{ path('igornast_datatables_get_data') }}",
+                    "type": "POST",
+                    "data": {
+                        {% if listing.pathName is not null %}"path_name": "{{ listing.pathName }}"{% endif %}
+                        {% if listing.encryptedEntity is not null %}"entity": "{{ listing.encryptedEntity }}"{% endif %}
+                        {% if listing.mainSearchField is not null %},"main_search_field": "{{ listing.mainSearchField }}"{% endif %}
+                    },
+                },
+                "columns": [
+                    {% for key, col in listing.columns %}
+                        { "data": "{{ key }}" },
+                    {% endfor %}
+                ]
+            });
+        } );
+    {% endif %}
 </script>

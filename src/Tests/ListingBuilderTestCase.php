@@ -25,7 +25,7 @@ class ListingBuilderTestCase extends TestCase
     public function testAddOneColumn()
     {
         $listingBuilder = (new ListingBuilder('awesome_listing_name', 'test_path'))
-            ->addColumn('testProperty', 'Property_Name');
+            ->column('testProperty', 'Property_Name');
 
         $this->assertCount(1, $listingBuilder->getListing()->getColumns());
     }
@@ -33,10 +33,10 @@ class ListingBuilderTestCase extends TestCase
     public function testAddMoreColumns()
     {
         $listingBuilder = (new ListingBuilder('awesome_listing_name', 'test_path'))
-            ->addColumn('testPropertyOne', 'Property_Name')
-            ->addColumn('testPropertyTwo', 'Property_Name')
-            ->addColumn('testPropertyThree', 'Property_Name')
-            ->addColumn('testPropertyFour', 'Property_Name');
+            ->column('testPropertyOne', 'Property_Name')
+            ->column('testPropertyTwo', 'Property_Name')
+            ->column('testPropertyThree', 'Property_Name')
+            ->column('testPropertyFour', 'Property_Name');
 
         $this->assertCount(4, $listingBuilder->getListing()->getColumns());
     }

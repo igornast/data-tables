@@ -9,23 +9,23 @@ class DataTablesColumn
     /**
      * @var int
      */
-    private $id;
+    private int $id;
     /**
      * @var string
      */
-    private $propertyName;
+    private string $propertyName;
     /**
      * @var string
      */
-    private $name;
+    private string $name;
     /**
      * @var string
      */
-    private $search;
+    private string $search;
     /**
      * @var null|string
      */
-    private $order;
+    private ?string $order;
 
     public static function create(int $id, string $field, string $name, string $search, ?string $order): self
     {

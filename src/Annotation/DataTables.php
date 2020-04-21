@@ -3,9 +3,12 @@
 
 namespace Igornast\DataTables\Annotation;
 
+use Igornast\DataTables\ListingBuilder\ListingBuilder;
+
 /**
  * Class DataTables
  * @Annotation
+ * @deprecated Add class name by ListingBuilder
  * @package Igornast\DataTables\Annotation
  */
 class DataTables
@@ -13,10 +16,14 @@ class DataTables
     /**
      * @var string
      */
-    public $entity;
-
+    public string $entity;
     /**
      * @var string
      */
-    public $searchField;
+    public string $searchField;
+
+    public function __construct()
+    {
+        trigger_error(sprintf('Annotation class "%s" is deprecated, pass name by "%s"', __CLASS__, ListingBuilder::class), E_USER_DEPRECATED);
+    }
 }

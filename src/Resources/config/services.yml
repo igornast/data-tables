@@ -20,3 +20,11 @@ services:
     Igornast\DataTables\Controller\DataTablesController:
         class: Igornast\DataTables\Controller\DataTablesController
         tags: ['controller.service_arguments']
+
+    Igornast\DataTables\Service\DataTablesCryptoManager:
+        class: Igornast\DataTables\Service\DataTablesCryptoManager
+        bind:
+            $appSecret: "%env(APP_SECRET)%"
+
+    Igornast\DataTables\Service\ListingManager:
+        class: Igornast\DataTables\Service\ListingManager

@@ -19,7 +19,7 @@ class DataTablesItemsFetcher
     /**
      * @var EntityManagerInterface
      */
-    private $em;
+    private EntityManagerInterface $em;
 
     /**
      * DataTablesItemsFetcher constructor.

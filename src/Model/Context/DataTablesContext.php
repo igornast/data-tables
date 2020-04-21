@@ -14,32 +14,42 @@ final class DataTablesContext implements DataTablesContextInterface
     /**
      * @var int
      */
-    private $draw;
+    private int $draw;
     /**
      * @var int
      */
-    private $offset;
+    private int $offset;
     /**
      * @var int
      */
-    private $limit;
+    private int $limit;
     /**
      * @var DataTablesColumn[]
      */
-    private $columns;
+    private array $columns;
     /**
      * @var int[]
      */
-    private $columnsSortOrder;
+    private array $columnsSortOrder;
     /**
      * @var null|string
      */
-    private $search;
+    private ?string $search;
 
     /**
      * @var null|string
      */
-    private $pathName;
+    private ?string $pathName;
+
+    /**
+     * @var string|null
+     */
+    private ?string  $encryptedEntity;
+
+    /**
+     * @var string|null
+     */
+    private ?string  $mainSearchField;
 
     public function __construct(RequestStack $request)
     {
@@ -55,6 +65,8 @@ final class DataTablesContext implements DataTablesContextInterface
         $this->offset = $request->request->getInt('start', 0);
         $this->limit = $request->request->getInt('length', 0);
         $this->pathName = $request->request->get('path_name', null);
+        $this->encryptedEntity = $request->request->get('entity', null);
+        $this->mainSearchField = $request->request->get('main_search_field', null);
 
         $columns = $request->request->get('columns', []);
         $order = $request->request->get('order', []);
@@ -138,6 +150,22 @@ final class DataTablesContext implements DataTablesContextInterface
     public function getColumns(): array
     {
         return $this->columns;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEncryptedEntity(): ?string
+    {
+        return $this->encryptedEntity;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMainSearchField(): ?string
+    {
+        return $this->mainSearchField;
     }
 
     /**

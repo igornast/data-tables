@@ -1,7 +1,7 @@
 igornast/data-tables
 ================
 DataTables Symfony component provide easy to use tool that allow you to build dynamically 
-generated js tables for your doctrine entities. MVP version available, feel free to send feedback 
+generated js tables for your doctrine entities. 2.0 version available, feel free to send feedback 
 and suggestions about development and features implementation.
 
 Primary goal is to improve rendering twig views with listings, 
@@ -51,56 +51,40 @@ Add and install assets (js, css) into your base twig template, use twig extensio
 
 ### Build Listing
 
-Extend Controller class with AbstractDataTablesController or create new instance for personal use.
+Use ListingManager service to build listing instance 
 ```php
-$first = (new ListingBuilder('my_awesome_table', 'app_index'));
-$second = $this->createListingBuilder('my_awesome_table_name', 'app_index');
+$listing = $listingManager
+        ->createListingBuilder('my_awesome_table', SampleItem::class)
+        ->getListing();
 ```
-Pass table name and route name of the controller that will render this specific listing table.
-Route name is used to identify controller action and read configuration defined in annotation.
-Data will be loaded from given entity and property from 'searchField' will be used during rows filtration.
+
+Pass table name and entity FQN.
+Data will be loaded from given entity and property from 'mainSearchField' will be used during rows filtration.
 
 ```php
-class IndexController extends AbstractDataTablesController
+class IndexController
 {
     /**
      * @Route("/", name="app_index")
-     * @DataTables(entity="App\Entity\SampleItem", searchField="name")
      */
-    public function index()
+    public function index(ListingManager $listingManager)
     {
-        $listing = $this
-            ->createListingBuilder('my_awesome_table_name', 'app_index')
-            ->addColumn('id', 'Id')
-            ->addColumn('name', 'Name')
-            ->addColumn('type', 'Type');
+        $listing = $listingManager
+            ->createListingBuilder('my_awesome_table', SampleItem::class)
+            ->mainSearchField('name')
+            ->column('id', 'Object Id')
+            ->column('type', 'Type')
+            ->column('name', 'Name')
+            ->getListing();
 
         return $this->render('index.html.twig', ['listing' => $listing]);
     }
 }
 ```
-Add columns by passing property name and column label to ListingBuilder::addColumn method.
+Add columns by passing property name and column label to ListingBuilder::column method.
 Component currently support only scalar values;
 ```php
-$listing->addColumn('entityProperty', 'Column Label');
-```
-
-### Annotation
-
-Use data-tables component annotation to configure source entity and search field for listing.
-
-```php
-use Igornast\DataTables\Annotation\DataTables;
-
-/**
- * @DataTables(entity="App\Entity\SampleItem", searchField="name")
- */
-public function index()
-{
-    //listing builder code
-
-    return $this->render('index.html.twig', ['listing' => $listing]);
-}
+$listing->column('entityProperty', 'Column Label');
 ```
 
 ## License
