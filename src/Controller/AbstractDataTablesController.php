@@ -8,6 +8,11 @@ use Igornast\DataTables\ListingBuilder\ListingBuilder;
 use Igornast\DataTables\Service\ListingManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * @deprecated Use ListingManager service
+ * Class AbstractDataTablesController
+ * @package Igornast\DataTables\Controller
+ */
 abstract class AbstractDataTablesController extends AbstractController
 {
     /**
