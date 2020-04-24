@@ -9,11 +9,11 @@ class DataTablesColumnSort
     /**
      * @var string
      */
-    private string $field;
+    private $field;
     /**
      * @var string
      */
-    private string $order;
+    private $order;
 
     public static function create(string $field, string $order): self
     {

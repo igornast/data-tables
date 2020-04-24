@@ -13,7 +13,7 @@ class ListingManager
     /**
      * @var DataTablesCryptoManager
      */
-    private DataTablesCryptoManager $cryptoManager;
+    private $cryptoManager;
 
     public function __construct(DataTablesCryptoManager $cryptoManager)
     {

@@ -13,7 +13,7 @@ class DataTablesCryptoManager
     /**
      * @var string
      */
-    private string $appSecret;
+    private $appSecret;
 
     public function __construct(string $appSecret)
     {

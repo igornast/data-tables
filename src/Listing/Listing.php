@@ -12,35 +12,35 @@ class Listing implements ListingInterface
     /**
      * @var string
      */
-    private string $name;
+    private $name;
     /**
      * @var array
      */
-    private array $columns;
+    private $columns;
     /**
      * @var array
      */
-    private array $filters;
+    private $filters;
     /**
      * @var array
      */
-    private array $options;
+    private $options;
     /**
      * @var null|string
      */
-    private ?string $pathName;
+    private $pathName;
     /**
      * @var string
      */
-    private string $template;
+    private $template;
     /**
      * @var null|string
      */
-    private ?string $encryptedEntity;
+    private $encryptedEntity;
     /**
      * @var null|string
      */
-    private ?string $mainSearchField;
+    private $mainSearchField;
 
     public static function create(string $name, ?string $pathName = null, ?string $encryptedEntity = null): self
     {

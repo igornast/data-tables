@@ -12,7 +12,7 @@ class ListingBuilder implements ListingBuilderInterface
     /**
      * @var Listing
      */
-    private Listing $listing;
+    private $listing;
 
     public function __construct(string $name, ?string $pathName = null, ?string $entity = null)
     {

@@ -27,19 +27,19 @@ class DataTablesController extends AbstractController
     /**
      * @var DataTablesContext
      */
-    protected DataTablesContext $dataTablesContext;
+    protected $dataTablesContext;
     /**
      * @var RouterInterface
      */
-    private RouterInterface $router;
+    private $router;
     /**
      * @var DataTablesItemsFetcher
      */
-    private DataTablesItemsFetcher $fetcher;
+    private $fetcher;
     /**
      * @var DataTablesCryptoManager
      */
-    private DataTablesCryptoManager $cryptoManager;
+    private $cryptoManager;
 
     public function __construct(DataTablesContext $dataTablesContext, RouterInterface $router, DataTablesItemsFetcher $fetcher, DataTablesCryptoManager $cryptoManager)
     {

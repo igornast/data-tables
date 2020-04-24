@@ -14,42 +14,47 @@ final class DataTablesContext implements DataTablesContextInterface
     /**
      * @var int
      */
-    private int $draw;
+    private $draw;
+
     /**
      * @var int
      */
-    private int $offset;
+    private $offset;
+
     /**
      * @var int
      */
-    private int $limit;
+    private $limit;
+
     /**
      * @var DataTablesColumn[]
      */
-    private array $columns;
+    private $columns;
+
     /**
      * @var int[]
      */
-    private array $columnsSortOrder;
-    /**
-     * @var null|string
-     */
-    private ?string $search;
+    private $columnsSortOrder;
 
     /**
      * @var null|string
      */
-    private ?string $pathName;
+    private $search;
+
+    /**
+     * @var null|string
+     */
+    private $pathName;
 
     /**
      * @var string|null
      */
-    private ?string  $encryptedEntity;
+    private  $encryptedEntity;
 
     /**
      * @var string|null
      */
-    private ?string  $mainSearchField;
+    private  $mainSearchField;
 
     public function __construct(RequestStack $request)
     {
@@ -137,6 +142,7 @@ final class DataTablesContext implements DataTablesContextInterface
     }
 
     /**
+     * @deprecated
      * @return null|string
      */
     public function getPathName(): ?string

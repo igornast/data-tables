@@ -1,7 +1,7 @@
 igornast/data-tables
 ================
 DataTables Symfony component provide easy to use tool that allow you to build dynamically 
-generated js tables for your doctrine entities. 2.0 version available, feel free to send feedback 
+generated js tables for your doctrine entities. 1.1 version available, feel free to send feedback 
 and suggestions about development and features implementation.
 
 Primary goal is to improve rendering twig views with listings, 

@@ -16,11 +16,11 @@ class DataTables
     /**
      * @var string
      */
-    public string $entity;
+    public $entity;
     /**
      * @var string
      */
-    public string $searchField;
+    public $searchField;
 
     public function __construct()
     {

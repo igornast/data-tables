@@ -9,11 +9,11 @@ class ControllerDetail
     /**
      * @var string
      */
-    private string $className;
+    private $className;
     /**
      * @var string
      */
-    private string $methodName;
+    private $methodName;
 
     public static function createFromArray(array $data): self
     {
