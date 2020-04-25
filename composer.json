@@ -1,6 +1,6 @@
 {
     "name": "igornast/data-tables",
-    "description": "DataTables Symfony component.",
+    "description": "DataTables Symfony 5 component.",
     "keywords": ["symfony", "datatables"],
     "type": "library",
     "license": "MIT",

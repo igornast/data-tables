@@ -24,6 +24,6 @@ class DataTables
 
     public function __construct()
     {
-        trigger_error(sprintf('Annotation class "%s" is deprecated, pass name by "%s"', __CLASS__, ListingBuilder::class), E_USER_DEPRECATED);
+        trigger_error(sprintf('Annotation class "%s" is deprecated  and will be removed in 2.0, pass name by "%s"', __CLASS__, ListingBuilder::class), E_USER_DEPRECATED);
     }
 }

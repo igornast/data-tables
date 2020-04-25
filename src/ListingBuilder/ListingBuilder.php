@@ -26,24 +26,24 @@ class ListingBuilder implements ListingBuilderInterface
         return $this;
     }
 
+    /**
+     * @param string $field
+     * @param string $label
+     * @return ListingBuilderInterface
+     * @deprecated
+     */
+    public function addColumn(string $field, string $label): ListingBuilderInterface
+    {
+        trigger_error(sprintf('Method "%s" is deprecated and will be removed in 2.0, use "%s::column"', __METHOD__, ListingBuilder::class), E_USER_DEPRECATED);
+
+        return $this->column($field, $label);
+    }
+
     public function column(string $field, string $label): ListingBuilderInterface
     {
         $this->listing->addColumn($field, $label);
 
         return $this;
-    }
-
-    /**
-     * @deprecated
-     * @param string $field
-     * @param string $label
-     * @return ListingBuilderInterface
-     */
-    public function addColumn(string $field, string $label): ListingBuilderInterface
-    {
-        trigger_error(sprintf('Method "%s" is deprecated, use "%s::column"', __METHOD__, ListingBuilder::class), E_USER_DEPRECATED);
-
-        return $this->column($field, $label);
     }
 
     public function getListing(): ListingInterface

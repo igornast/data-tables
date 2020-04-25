@@ -16,14 +16,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 abstract class AbstractDataTablesController extends AbstractController
 {
     /**
-     * @deprecated
      * @param string $name
      * @param string $pathName
      * @return ListingBuilder
+     * @deprecated
      */
     protected function createListingBuilder(string $name, string $pathName): ListingBuilder
     {
-        trigger_error(sprintf('Method "%s" is deprecated, use "%s::createListingBuilder"', __METHOD__, ListingManager::class), E_USER_DEPRECATED);
+        trigger_error(sprintf('Method "%s" is deprecated and will be removed in 2.0, use "%s::createListingBuilder"', __METHOD__, ListingManager::class), E_USER_DEPRECATED);
 
         return new ListingBuilder($name, $pathName);
     }

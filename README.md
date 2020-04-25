@@ -1,10 +1,10 @@
 igornast/data-tables
 ================
 DataTables Symfony component provide easy to use tool that allow you to build dynamically 
-generated js tables for your doctrine entities. 1.1 version available, feel free to send feedback 
+generated js tables for your doctrine entities. Feel free to send feedback 
 and suggestions about development and features implementation.
 
-Primary goal is to improve rendering twig views with listings, 
+Primary goal is to improve rendering viewstwig  with listings, 
 to make them more friendly to users and Symfony developers.
 
 ### Example
@@ -85,6 +85,39 @@ Add columns by passing property name and column label to ListingBuilder::column 
 Component currently support only scalar values;
 ```php
 $listing->column('entityProperty', 'Column Label');
+```
+
+## Annotation - deprecated
+
+1.1 version still support old solution, but new one is recommended. 
+
+Extend Controller class with AbstractDataTablesController or create new instance for personal use.
+```php
+$first = (new ListingBuilder('my_awesome_table', 'app_index'));
+$second = $this->createListingBuilder('my_awesome_table_name', 'app_index');
+```
+Pass table name and route name of the controller that will render this specific listing table.
+Route name is used to identify controller action and read configuration defined in annotation.
+Data will be loaded from given entity and property from 'searchField' will be used during rows filtration.
+
+```php
+class IndexController extends AbstractDataTablesController
+{
+    /**
+     * @Route("/", name="app_index")
+     * @DataTables(entity="App\Entity\SampleItem", searchField="name")
+     */
+    public function index()
+    {
+        $listing = $this
+            ->createListingBuilder('my_awesome_table_name', 'app_index')
+            ->addColumn('id', 'Id')
+            ->addColumn('name', 'Name')
+            ->addColumn('type', 'Type');
+
+        return $this->render('index.html.twig', ['listing' => $listing]);
+    }
+}
 ```
 
 ## License
