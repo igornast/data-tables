@@ -1,6 +1,7 @@
 {
     "name": "igornast/data-tables",
-    "description": "DataTables Symfony component.",
+    "description": "DataTables Symfony 5 component.",
+    "keywords": ["symfony", "datatables"],
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -13,7 +14,8 @@
         "php": "^7.2",
         "ext-pdo": "*",
         "doctrine/annotations": "^1.8",
-        "symfony/framework-bundle": "^5.0"
+        "symfony/framework-bundle": "^5.0",
+        "defuse/php-encryption": "^2.2"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^5.0"

@@ -15,22 +15,27 @@ final class DataTablesContext implements DataTablesContextInterface
      * @var int
      */
     private $draw;
+
     /**
      * @var int
      */
     private $offset;
+
     /**
      * @var int
      */
     private $limit;
+
     /**
      * @var DataTablesColumn[]
      */
     private $columns;
+
     /**
      * @var int[]
      */
     private $columnsSortOrder;
+
     /**
      * @var null|string
      */
@@ -40,6 +45,16 @@ final class DataTablesContext implements DataTablesContextInterface
      * @var null|string
      */
     private $pathName;
+
+    /**
+     * @var string|null
+     */
+    private  $encryptedEntity;
+
+    /**
+     * @var string|null
+     */
+    private  $mainSearchField;
 
     public function __construct(RequestStack $request)
     {
@@ -55,6 +70,8 @@ final class DataTablesContext implements DataTablesContextInterface
         $this->offset = $request->request->getInt('start', 0);
         $this->limit = $request->request->getInt('length', 0);
         $this->pathName = $request->request->get('path_name', null);
+        $this->encryptedEntity = $request->request->get('entity', null);
+        $this->mainSearchField = $request->request->get('main_search_field', null);
 
         $columns = $request->request->get('columns', []);
         $order = $request->request->get('order', []);
@@ -125,6 +142,7 @@ final class DataTablesContext implements DataTablesContextInterface
     }
 
     /**
+     * @deprecated
      * @return null|string
      */
     public function getPathName(): ?string
@@ -138,6 +156,22 @@ final class DataTablesContext implements DataTablesContextInterface
     public function getColumns(): array
     {
         return $this->columns;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEncryptedEntity(): ?string
+    {
+        return $this->encryptedEntity;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMainSearchField(): ?string
+    {
+        return $this->mainSearchField;
     }
 
     /**

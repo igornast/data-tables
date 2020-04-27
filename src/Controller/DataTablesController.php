@@ -3,15 +3,18 @@
 
 namespace Igornast\DataTables\Controller;
 
+use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
+use Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException;
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Igornast\DataTables\Annotation\DataTables;
 use Igornast\DataTables\Exception\DataTablesAnnotationException;
+use Igornast\DataTables\Fetcher\DataTablesItemsFetcher;
 use Igornast\DataTables\Model\Context\DataTablesContext;
 use Igornast\DataTables\Model\ControllerDetail;
-use Igornast\DataTables\Fetcher\DataTablesItemsFetcher;
+use Igornast\DataTables\Service\DataTablesCryptoManager;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -33,29 +36,65 @@ class DataTablesController extends AbstractController
      * @var DataTablesItemsFetcher
      */
     private $fetcher;
+    /**
+     * @var DataTablesCryptoManager
+     */
+    private $cryptoManager;
 
-    public function __construct(DataTablesContext $dataTablesContext, RouterInterface $router, DataTablesItemsFetcher $fetcher)
+    public function __construct(DataTablesContext $dataTablesContext, RouterInterface $router, DataTablesItemsFetcher $fetcher, DataTablesCryptoManager $cryptoManager)
     {
         $this->dataTablesContext = $dataTablesContext;
         $this->router = $router;
         $this->fetcher = $fetcher;
+        $this->cryptoManager = $cryptoManager;
     }
 
     /**
      * @return JsonResponse
      * @throws AnnotationException
      * @throws DataTablesAnnotationException
-     * @throws ReflectionException
      * @throws NoResultException
      * @throws NonUniqueResultException
+     * @throws ReflectionException
+     * @throws EnvironmentIsBrokenException
+     * @throws WrongKeyOrModifiedCiphertextException
      */
     public function __invoke()
+    {
+        if ($this->dataTablesContext->getPathName() !== null) {
+            return $this->handleWithAnnotation();
+        }
+
+        $searchField = $this->dataTablesContext->getMainSearchField();
+        $entity = $this->cryptoManager->decrypt($this->dataTablesContext->getEncryptedEntity());
+
+        $items = $this->fetcher->findByContext($entity, $this->dataTablesContext, $searchField);
+        $filtered = $this->fetcher->countByContext($entity, $this->dataTablesContext, $searchField);
+        $total = $this->fetcher->countTotalEntityItems($entity);
+
+        return new JsonResponse([
+            'draw' => $this->dataTablesContext->getDraw(),
+            'recordsTotal' => $total,
+            'recordsFiltered' => $filtered,
+            'data' => $items
+        ]);
+    }
+
+    /**
+     * @return JsonResponse
+     * @throws AnnotationException
+     * @throws DataTablesAnnotationException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     * @throws ReflectionException
+     */
+    private function handleWithAnnotation(): JsonResponse
     {
         /** @var DataTables|null $dataTableAnnotation */
         $dataTableAnnotation = null;
         $route = $this->router->getRouteCollection()->get($this->dataTablesContext->getPathName());
 
-        if($route === null) {
+        if ($route === null) {
             throw DataTablesAnnotationException::routeNotFoundException($this->dataTablesContext->getPathName());
         }
 
@@ -68,13 +107,17 @@ class DataTablesController extends AbstractController
             throw DataTablesAnnotationException::annotationNotFoundException($detail->getClassName());
         }
 
-        if($dataTableAnnotation->entity === null || $dataTableAnnotation->searchField === null) {
+        if ($dataTableAnnotation->entity === null || $dataTableAnnotation->searchField === null) {
             throw DataTablesAnnotationException::badConfigurationException($detail->getClassName());
         }
 
-        $items = $this->fetcher->findByContext($dataTableAnnotation->entity, $this->dataTablesContext, $dataTableAnnotation->searchField);
-        $filtered = $this->fetcher->countByContext($dataTableAnnotation->entity, $this->dataTablesContext, $dataTableAnnotation->searchField);
-        $total = $this->fetcher->countTotalEntityItems($dataTableAnnotation->entity);
+        $entity = $dataTableAnnotation->entity;
+        $searchField = $dataTableAnnotation->searchField;
+
+
+        $items = $this->fetcher->findByContext($entity, $this->dataTablesContext, $searchField);
+        $filtered = $this->fetcher->countByContext($entity, $this->dataTablesContext, $searchField);
+        $total = $this->fetcher->countTotalEntityItems($entity);
 
         return new JsonResponse([
             'draw' => $this->dataTablesContext->getDraw(),
