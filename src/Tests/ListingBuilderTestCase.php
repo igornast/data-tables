@@ -37,6 +37,10 @@ class ListingBuilderTestCase extends TestCase
         $this->assertCount(1, $listingBuilder->getListing()->getColumns());
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation %s
+     */
     public function testDeprecatedAddOneColumn()
     {
         $listingBuilder = (new ListingBuilder('awesome_listing_name', 'test_path'))
@@ -56,6 +60,10 @@ class ListingBuilderTestCase extends TestCase
         $this->assertCount(4, $listingBuilder->getListing()->getColumns());
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation %s
+     */
     public function testDeprecatedAddMoreColumns()
     {
         $listingBuilder = (new ListingBuilder('awesome_listing_name', 'test_path'))
