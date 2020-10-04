@@ -8,7 +8,7 @@ interface ListingInterface
 {
     public function getColumns(): array;
 
-    public function getEncryptedEntity(): ?string;
+    public function getTemplate(): string ;
 
-    public function getPathName(): ?string;
+    public function getEncryptedEntity(): ?string;
 }

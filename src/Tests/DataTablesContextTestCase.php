@@ -22,7 +22,6 @@ class DataTablesContextTestCase extends TestCase
         $this->assertSame(0, $context->getOffset());
         $this->assertSame(0, $context->getLimit());
 
-        $this->assertSame(null, $context->getPathName());
         $this->assertSame(null, $context->getEncryptedEntity());
         $this->assertSame(null, $context->getSearch());
 
@@ -49,7 +48,6 @@ class DataTablesContextTestCase extends TestCase
             'draw' => 2,
             'start' => 10,
             'length' => 25,
-            'path_name' => 'test_path_name',
             'entity' => 'encrypted_entity_name'
         ]);
 
@@ -61,7 +59,6 @@ class DataTablesContextTestCase extends TestCase
         $this->assertSame(10, $context->getOffset());
         $this->assertSame(25, $context->getLimit());
 
-        $this->assertSame('test_path_name', $context->getPathName());
         $this->assertSame('encrypted_entity_name', $context->getEncryptedEntity());
         $this->assertSame(null, $context->getSearch());
 
@@ -76,7 +73,6 @@ class DataTablesContextTestCase extends TestCase
             'draw' => 2,
             'start' => 10,
             'length' => 25,
-            'path_name' => 'test_path_name',
             'columns' => [
                 ['data' => 'id', 'name' => 'Id', 'search' => ['value' => 'search_value']],
                 ['data' => 'type', 'name' => 'Type', 'search' => ['value' => 'search_value']]
@@ -91,7 +87,6 @@ class DataTablesContextTestCase extends TestCase
         $this->assertSame(10, $context->getOffset());
         $this->assertSame(25, $context->getLimit());
 
-        $this->assertSame('test_path_name', $context->getPathName());
         $this->assertSame(null, $context->getSearch());
 
         $this->assertCount(2, $context->getColumns());

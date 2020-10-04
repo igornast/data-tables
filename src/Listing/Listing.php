@@ -26,10 +26,6 @@ class Listing implements ListingInterface
      */
     private $options;
     /**
-     * @var null|string
-     */
-    private $pathName;
-    /**
      * @var string
      */
     private $template;
@@ -42,23 +38,14 @@ class Listing implements ListingInterface
      */
     private $mainSearchField;
 
-    public static function create(string $name, ?string $pathName = null, ?string $encryptedEntity = null): self
+    public static function create(string $name, string $encryptedEntity): self
     {
-        if(is_null($pathName) && is_null($encryptedEntity)) {
-            throw ListingInvalidArgumentException::NullArgumentsGiven();
-        }
-
-        if(is_null($pathName) === false && is_null($encryptedEntity) === false) {
-            throw ListingInvalidArgumentException::NotNullArgumentsGiven();
-        }
-
         $obj = new self();
         $obj->name = $name;
         $obj->columns = [];
         $obj->encryptedEntity = $encryptedEntity;
         $obj->filters = [];
         $obj->options = [];
-        $obj->pathName = $pathName;
         $obj->mainSearchField = null;
         $obj->template = self::DEFAULT_TEMPLATE;
 
@@ -89,12 +76,16 @@ class Listing implements ListingInterface
         return $this->template;
     }
 
+
     /**
-     * @return null|string
+     * @param string $template
+     * @return Listing
      */
-    public function getPathName(): ?string
+    public function setTemplate(string $template): self
     {
-        return $this->pathName;
+        $this->template = $template;
+
+        return $this;
     }
 
     /**
@@ -113,6 +104,11 @@ class Listing implements ListingInterface
         return $this->encryptedEntity;
     }
 
+    /**
+     * @param string $field
+     * @param string $label
+     * @return $this
+     */
     public function addColumn(string $field, string $label): self
     {
         $this->columns = array_merge($this->columns, [$field => ['label' => $label]]);
@@ -120,6 +116,10 @@ class Listing implements ListingInterface
         return $this;
     }
 
+    /**
+     * @param string $field
+     * @return $this
+     */
     public function addMainSearchField(string $field): self
     {
         $this->mainSearchField = $field;

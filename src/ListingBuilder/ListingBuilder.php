@@ -14,9 +14,9 @@ class ListingBuilder implements ListingBuilderInterface
      */
     private $listing;
 
-    public function __construct(string $name, ?string $pathName = null, ?string $entity = null)
+    public function __construct(string $name, string $entity)
     {
-        $this->listing = Listing::create($name, $pathName, $entity);
+        $this->listing = Listing::create($name, $entity);
     }
 
     public function mainSearchField(string $field): ListingBuilderInterface
@@ -26,22 +26,16 @@ class ListingBuilder implements ListingBuilderInterface
         return $this;
     }
 
-    /**
-     * @param string $field
-     * @param string $label
-     * @return ListingBuilderInterface
-     * @deprecated
-     */
-    public function addColumn(string $field, string $label): ListingBuilderInterface
-    {
-        trigger_error(sprintf('Method "%s" is deprecated and will be removed in 2.0, use "%s::column"', __METHOD__, ListingBuilder::class), E_USER_DEPRECATED);
-
-        return $this->column($field, $label);
-    }
-
     public function column(string $field, string $label): ListingBuilderInterface
     {
         $this->listing->addColumn($field, $label);
+
+        return $this;
+    }
+
+    public function template(string $template): ListingBuilderInterface
+    {
+        $this->listing->setTemplate($template);
 
         return $this;
     }

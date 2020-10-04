@@ -10,48 +10,29 @@ class ListingBuilderTestCase extends TestCase
 {
     public function testAddListingName()
     {
-        $listingBuilder = new ListingBuilder('awesome_listing_name', 'test_path');
+        $listingBuilder = new ListingBuilder('awesome_listing_name', 'encrypted_entity_name');
 
         $this->assertSame('awesome_listing_name', $listingBuilder->getListing()->getName());
     }
 
     public function testInitializeWithEntityName()
     {
-        $listingBuilder = new ListingBuilder('awesome_listing_name', null, 'encrypted_entity_name');
+        $listingBuilder = new ListingBuilder('awesome_listing_name', 'encrypted_entity_name');
 
         $this->assertSame('encrypted_entity_name', $listingBuilder->getListing()->getEncryptedEntity());
     }
 
-    public function testAddPathName()
-    {
-        $listingBuilder = new ListingBuilder('awesome_listing_name', 'test_path');
-
-        $this->assertSame('test_path', $listingBuilder->getListing()->getPathName());
-    }
-
     public function testAddOneColumn()
     {
-        $listingBuilder = (new ListingBuilder('awesome_listing_name', 'test_path'))
+        $listingBuilder = (new ListingBuilder('awesome_listing_name', 'encrypted_entity_name'))
             ->column('testProperty', 'Property_Name');
-
-        $this->assertCount(1, $listingBuilder->getListing()->getColumns());
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation %s
-     */
-    public function testDeprecatedAddOneColumn()
-    {
-        $listingBuilder = (new ListingBuilder('awesome_listing_name', 'test_path'))
-            ->addColumn('testProperty', 'Property_Name');
 
         $this->assertCount(1, $listingBuilder->getListing()->getColumns());
     }
 
     public function testAddMoreColumns()
     {
-        $listingBuilder = (new ListingBuilder('awesome_listing_name', 'test_path'))
+        $listingBuilder = (new ListingBuilder('awesome_listing_name', 'encrypted_entity_name'))
             ->column('testPropertyOne', 'Property_Name')
             ->column('testPropertyTwo', 'Property_Name')
             ->column('testPropertyThree', 'Property_Name')
@@ -60,18 +41,13 @@ class ListingBuilderTestCase extends TestCase
         $this->assertCount(4, $listingBuilder->getListing()->getColumns());
     }
 
-    /**
-     * @group legacy
-     * @expectedDeprecation %s
-     */
-    public function testDeprecatedAddMoreColumns()
+    public function testAddCustomTemplate()
     {
-        $listingBuilder = (new ListingBuilder('awesome_listing_name', 'test_path'))
-            ->addColumn('testPropertyOne', 'Property_Name')
-            ->addColumn('testPropertyTwo', 'Property_Name')
-            ->addColumn('testPropertyThree', 'Property_Name')
-            ->addColumn('testPropertyFour', 'Property_Name');
+        $template = 'listing/custom_listing.html.twig';
 
-        $this->assertCount(4, $listingBuilder->getListing()->getColumns());
+        $listingBuilder = (new ListingBuilder('awesome_listing_name', 'encrypted_entity_name'))
+            ->template($template);
+
+        $this->assertEquals($template, $listingBuilder->getListing()->getTemplate());
     }
 }
