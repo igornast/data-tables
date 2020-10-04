@@ -42,11 +42,6 @@ final class DataTablesContext implements DataTablesContextInterface
     private $search;
 
     /**
-     * @var null|string
-     */
-    private $pathName;
-
-    /**
      * @var string|null
      */
     private  $encryptedEntity;
@@ -139,15 +134,6 @@ final class DataTablesContext implements DataTablesContextInterface
     public function getSearch(): ?string
     {
         return $this->search;
-    }
-
-    /**
-     * @deprecated
-     * @return null|string
-     */
-    public function getPathName(): ?string
-    {
-        return $this->pathName;
     }
 
     /**

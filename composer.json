@@ -2,6 +2,7 @@
     "name": "igornast/data-tables",
     "description": "DataTables Symfony 5 component.",
     "keywords": ["symfony", "datatables"],
+    "version": "2.0.0",
     "type": "library",
     "license": "MIT",
     "authors": [

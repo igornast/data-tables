@@ -28,6 +28,6 @@ class ListingManager
      */
     public function createListingBuilder(string $name, string $entity): ListingBuilderInterface
     {
-        return new ListingBuilder($name, null, $this->cryptoManager->encrypt($entity));
+        return new ListingBuilder($name, $this->cryptoManager->encrypt($entity));
     }
 }

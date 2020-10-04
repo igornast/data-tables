@@ -51,20 +51,13 @@ class DataTablesController extends AbstractController
 
     /**
      * @return JsonResponse
-     * @throws AnnotationException
-     * @throws DataTablesAnnotationException
      * @throws NoResultException
      * @throws NonUniqueResultException
-     * @throws ReflectionException
      * @throws EnvironmentIsBrokenException
      * @throws WrongKeyOrModifiedCiphertextException
      */
     public function __invoke()
     {
-        if ($this->dataTablesContext->getPathName() !== null) {
-            return $this->handleWithAnnotation();
-        }
-
         $searchField = $this->dataTablesContext->getMainSearchField();
         $entity = $this->cryptoManager->decrypt($this->dataTablesContext->getEncryptedEntity());
 
@@ -78,71 +71,5 @@ class DataTablesController extends AbstractController
             'recordsFiltered' => $filtered,
             'data' => $items
         ]);
-    }
-
-    /**
-     * @return JsonResponse
-     * @throws AnnotationException
-     * @throws DataTablesAnnotationException
-     * @throws NoResultException
-     * @throws NonUniqueResultException
-     * @throws ReflectionException
-     */
-    private function handleWithAnnotation(): JsonResponse
-    {
-        /** @var DataTables|null $dataTableAnnotation */
-        $dataTableAnnotation = null;
-        $route = $this->router->getRouteCollection()->get($this->dataTablesContext->getPathName());
-
-        if ($route === null) {
-            throw DataTablesAnnotationException::routeNotFoundException($this->dataTablesContext->getPathName());
-        }
-
-        $detail = ControllerDetail::createFromArray(explode('::', $route->getDefault('_controller')));
-
-        $object = new ReflectionClass($detail->getClassName());
-        $dataTableAnnotation = $this->getAnnotationFromReflectedMethod($object->getMethod($detail->getMethodName()));
-
-        if ($dataTableAnnotation === null) {
-            throw DataTablesAnnotationException::annotationNotFoundException($detail->getClassName());
-        }
-
-        if ($dataTableAnnotation->entity === null || $dataTableAnnotation->searchField === null) {
-            throw DataTablesAnnotationException::badConfigurationException($detail->getClassName());
-        }
-
-        $entity = $dataTableAnnotation->entity;
-        $searchField = $dataTableAnnotation->searchField;
-
-
-        $items = $this->fetcher->findByContext($entity, $this->dataTablesContext, $searchField);
-        $filtered = $this->fetcher->countByContext($entity, $this->dataTablesContext, $searchField);
-        $total = $this->fetcher->countTotalEntityItems($entity);
-
-        return new JsonResponse([
-            'draw' => $this->dataTablesContext->getDraw(),
-            'recordsTotal' => $total,
-            'recordsFiltered' => $filtered,
-            'data' => $items
-        ]);
-    }
-
-    /**
-     * @param ReflectionMethod $controllerMethod
-     * @return DataTables|null
-     * @throws AnnotationException
-     */
-    private function getAnnotationFromReflectedMethod(ReflectionMethod $controllerMethod): ?DataTables
-    {
-        $annotations = (new AnnotationReader())->getMethodAnnotations($controllerMethod);
-        foreach ($annotations as $annotation) {
-            if (!$annotation instanceof DataTables) {
-                continue;
-            }
-
-            return $annotation;
-        }
-
-        return null;
     }
 }
