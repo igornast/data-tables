@@ -72,6 +72,7 @@ class IndexController
         $listing = $listingManager
             ->createListingBuilder('my_awesome_table', SampleItem::class)
             ->mainSearchField('name')
+            ->template('custom_listing_template.html.twig')
             ->column('id', 'Object Id')
             ->column('type', 'Type')
             ->column('name', 'Name')
@@ -86,38 +87,9 @@ Component currently support only scalar values;
 ```php
 $listing->column('entityProperty', 'Column Label');
 ```
-
-## Annotation - deprecated
-
-1.1 version still support old solution, but new one is recommended. 
-
-Extend Controller class with AbstractDataTablesController or create new instance for personal use.
+Pass custom template with ListingBuilder::template method.
 ```php
-$first = (new ListingBuilder('my_awesome_table', 'app_index'));
-$second = $this->createListingBuilder('my_awesome_table_name', 'app_index');
-```
-Pass table name and route name of the controller that will render this specific listing table.
-Route name is used to identify controller action and read configuration defined in annotation.
-Data will be loaded from given entity and property from 'searchField' will be used during rows filtration.
-
-```php
-class IndexController extends AbstractDataTablesController
-{
-    /**
-     * @Route("/", name="app_index")
-     * @DataTables(entity="App\Entity\SampleItem", searchField="name")
-     */
-    public function index()
-    {
-        $listing = $this
-            ->createListingBuilder('my_awesome_table_name', 'app_index')
-            ->addColumn('id', 'Id')
-            ->addColumn('name', 'Name')
-            ->addColumn('type', 'Type');
-
-        return $this->render('index.html.twig', ['listing' => $listing]);
-    }
-}
+$listing->template('listing_template.html.twig');
 ```
 
 ## License
